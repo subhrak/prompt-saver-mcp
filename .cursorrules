@@ -110,3 +110,74 @@ You:
 1. Run save command
 2. Show confirmation: "✅ Prompt saved! ID: [id]"
 
+---
+
+## Search Commands
+
+When the user says any of these phrases:
+- "search my prompts for [query]"
+- "find prompts about [topic]"
+- "search for prompts related to [topic]"
+- "look for saved prompts about [query]"
+- "do I have any prompts for [task]"
+- "search prompts about [topic]"
+
+Do this:
+1. Extract the search query from the user's message
+2. Run:
+   ```bash
+   python scripts/prompt_helper.py search "[SEARCH_QUERY]"
+   ```
+   (Use absolute path if needed: `/Users/subhra.kundu/Desktop/MCP\ Repo/prompt-saver-mcp/scripts/prompt_helper.py`)
+3. Display the search results showing:
+   - Number of prompts found
+   - Prompt IDs
+   - Use case categories
+   - Summaries
+   - Similarity scores
+4. Tell the user: "Found [X] matching prompts. Say 'show details for [prompt_id]' to view the full template, or tell me which one you want to use."
+
+---
+
+## Get Prompt Details Commands
+
+When the user says:
+- "show details for [prompt_id]"
+- "get prompt details [prompt_id]"
+- "show me prompt [prompt_id]"
+- "view prompt [prompt_id]"
+- "show me the full template for [prompt_id]"
+
+Do this:
+1. Extract the prompt ID from the user's message
+2. Run:
+   ```bash
+   python scripts/prompt_helper.py details [PROMPT_ID]
+   ```
+   (Use absolute path if needed: `/Users/subhra.kundu/Desktop/MCP\ Repo/prompt-saver-mcp/scripts/prompt_helper.py`)
+3. Display the full prompt details including:
+   - Prompt ID and metadata
+   - Full summary
+   - Complete history
+   - Entire prompt template with all sections
+4. Ask the user: "Would you like me to help you adapt this template for your current task?"
+
+---
+
+## Search by Use Case Commands
+
+When the user says:
+- "show me all [use-case] prompts"
+- "list my [use-case] prompts"
+- "what [use-case] prompts do I have"
+
+Where [use-case] is one of: code-gen, text-gen, data-analysis, creative, general
+
+Do this:
+1. Extract the use case from the user's message
+2. Run:
+   ```bash
+   python scripts/prompt_helper.py use-case [USE_CASE]
+   ```
+3. Display the results grouped by use case
+

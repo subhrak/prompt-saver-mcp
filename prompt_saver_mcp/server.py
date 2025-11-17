@@ -31,6 +31,14 @@ from prompt_saver_mcp.tools.update_prompt import (
     get_update_prompt_tool,
     handle_update_prompt,
 )
+from prompt_saver_mcp.tools.preview_prompt import (
+    get_preview_prompt_tool,
+    handle_preview_prompt,
+)
+from prompt_saver_mcp.tools.save_approved_prompt import (
+    get_save_approved_prompt_tool,
+    handle_save_approved_prompt,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -47,6 +55,8 @@ async def list_tools() -> list[Tool]:
     """List all available tools."""
     return [
         get_save_prompt_tool(),
+        get_preview_prompt_tool(),
+        get_save_approved_prompt_tool(),
         get_search_prompts_tool(),
         get_search_prompts_by_use_case_tool(),
         get_update_prompt_tool(),
@@ -103,6 +113,23 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[dict]:
                 prompt_id=arguments.get("prompt_id", ""),
                 feedback=arguments.get("feedback", ""),
                 conversation_context=arguments.get("conversation_context"),
+            )
+            return [{"type": "text", "text": result[0].text}]
+
+        elif name == "preview_prompt":
+            result = await handle_preview_prompt(
+                conversation_messages=arguments.get("conversation_messages", ""),
+                task_description=arguments.get("task_description"),
+            )
+            return [{"type": "text", "text": result[0].text}]
+
+        elif name == "save_approved_prompt":
+            result = await handle_save_approved_prompt(
+                use_case=arguments.get("use_case", ""),
+                summary=arguments.get("summary", ""),
+                prompt_template=arguments.get("prompt_template", ""),
+                history=arguments.get("history", ""),
+                context_info=arguments.get("context_info"),
             )
             return [{"type": "text", "text": result[0].text}]
 
